@@ -4,11 +4,16 @@ import { useState } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 
 function Developer() {
     const [value, setValue] = useState(0);
     const [category, setCategory] = useState('School/Experience');
+    const [description, setDescription] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [errorMessage, setErrorMessage] = useState('Please fill this field');
 
     const handleChange = (event: any, newValue: number) => {
       setValue(newValue);
@@ -58,7 +63,7 @@ function Developer() {
                id="outlined-select"
                select
                label="Select Category"
-               helperText="Please select the category"
+               helperText={errorMessage}
                sx={{
                 textAlign:'left',
                 width: 'auto'
@@ -71,18 +76,24 @@ function Developer() {
               <TextField
                id="outlined-helperText"
                label={category}
-               helperText="Some important text"
+               helperText={errorMessage}
                />
-               {/* <LocalizationProvider  dateAdapter={ AdapterDayjs }>
-               <DatePicker
-                label="Helper text example"
-                slotProps={{
-                textField: {
-                    helperText: 'MM/DD/YYYY',
-                },
-                }}
-                />
-               </LocalizationProvider> */}
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                    <DatePicker label="Start Date" />
+                </DemoContainer>
+                <label>{errorMessage}</label>
+                </LocalizationProvider>
+                
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                    <DatePicker label="End Date" sx={{color: 'red'}}/>
+                </DemoContainer>
+                <label>{errorMessage}</label>
+                </LocalizationProvider>
+
                <Button sx={{
                 backgroundColor: 'rgba(138, 172, 94, 1)'
                }} onClick={postContent}>POST</Button>
@@ -98,14 +109,14 @@ function Developer() {
                 <TextField
                 type="file"
                 id="outlined-helperText"
-                helperText="Choose file"
+                helperText={errorMessage}
                 />
                 <TextField
                 id="outlined-helperText"
                 label='Enter full description'
                 multiline={true}
                 rows={4}
-                helperText="Full Description"
+                helperText={errorMessage}
                 />
                 <Button sx={{
                     backgroundColor: 'rgba(138, 172, 94, 1)'
